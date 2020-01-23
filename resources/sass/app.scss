@@ -7,8 +7,7 @@
 
 $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 
-// Bootstrap (not needed as AdminLte has all that we need
-//@import '~bootstrap/scss/bootstrap';
+@import '~bootstrap/scss/bootstrap';
 
 // AdminLte Global Style Template
 @import '~admin-lte/dist/css/adminlte.css';
