@@ -27,7 +27,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="customer in customers" :key="customer.id">
+                <tr v-for="customer in customers.data" :key="customer.id">
                   <td>{{ customer.id }}</td>
                   <td>{{ customer.type_id }}</td>
                   <td>{{ customer.name | capitalize }}</td>
@@ -48,6 +48,9 @@
             </table>
           </div>
           <!-- /.card-body -->
+          <div class="card-footer">
+            <pagination :data="customers" @pagination-change-page="getResults"></pagination>
+          </div>
         </div>
         <!-- /.card -->
       </div>
@@ -263,6 +266,11 @@ export default {
     };
   },
   methods: {
+    getResults(page = 1) {
+      axios.get("api/customer/?page=" + page).then(response => {
+        this.customers = response.data;
+      });
+    },
     loadCustomers() {
       axios.get("api/customer").then(({ data }) => (this.customers = data));
     },
@@ -352,6 +360,21 @@ export default {
     }
   },
   created() {
+
+    Event.$on("search", () => {
+      let query = this.$parent.inputSearch;
+      axios.get('api/findCustomer?q=' + query)
+      .then((data) => {
+        this.customers = data.data
+      })
+      .catch(() => {
+        toast.fire({
+            icon: "warning",
+            title: "You search has 0 result!"
+          });
+      })
+    });
+
     this.loadCustomers();
     Event.$on("updateListCustomers", () => {
       this.loadCustomers();

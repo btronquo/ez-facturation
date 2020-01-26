@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
-
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +15,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        return Customer::all();
+        return Customer::latest()->paginate(10);
     }
 
     /**
@@ -96,4 +95,26 @@ class CustomerController extends Controller
       $customer = Customer::findOrFail($id);
       $customer->delete();
     }
+
+    /**
+     * Search the specified input from searchbar in Customers.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function search()
+    {
+
+      if ($search = \Request::get('q')) {
+        $customers = Customer::where(function($query) use ($search){
+          $query->where('name','LIKE',"%$search%")
+                ->orWhere('contact_mail','LIKE',"%$search%");
+        })->paginate(20);
+      }else {
+        return Customer::latest()->paginate(10);
+      }
+
+      return $customers;
+    }
+
 }
