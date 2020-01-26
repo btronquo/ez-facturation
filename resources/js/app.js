@@ -1,9 +1,3 @@
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
-
 require('./bootstrap');
 require('admin-lte');
 
@@ -20,9 +14,14 @@ moment.locale('fr');
  */
 import { Form, HasError, AlertError } from 'vform';
 window.Form = Form;
-
 Vue.component(HasError.name, HasError);
 Vue.component(AlertError.name, AlertError);
+
+/**
+ * pagination
+ */
+Vue.component('pagination', require('laravel-vue-pagination'));
+
 
 /**
  * Sweetalert2 (alert & toast)
@@ -43,13 +42,6 @@ const toast = swal.mixin({
 });
 window.toast = toast;
 
-
-
-
-
-
-
-
 /**
  * Vue-Progressbar
  */
@@ -69,8 +61,12 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter)
 
 let routes = [
+    { path: '/billing', component: require('./components/billing/Billing.vue').default },
+    { path: '/invoice-generation', component: require('./components/billing/Invoice.vue').default },
+    { name: 'invoice-result', path: '/invoice-result', component: require('./components/billing/InvoiceResult.vue').default },
+    { path: '/home', component: require('./components/manager/Dashboard.vue').default },
     { path: '/dashboard', component: require('./components/manager/Dashboard.vue').default },
-    { path: '/profile', component: require('./components/user/Profile.vue').default },
+    { path: '/settings', component: require('./components/settings/Settings.vue').default },
     { path: '/customer', component: require('./components/manager/customers/Client.vue').default },
     { path: '/reference', component: require('./components/manager/references/Reference.vue').default },
     { path: '*', component: require('./components/404.vue').default }
@@ -96,11 +92,20 @@ Vue.filter('myDate', function (date) {
   return moment(date).format('Do MMMM YYYY, HH:mm:ss');
 })
 
+// Truncate text
+Vue.filter('truncate', function (text, stop, clamp) {
+  return text.slice(0, stop) + (stop < text.length ? clamp || '...' : '')
+})
+
 /**
  * Global event listener
  */
 window.Event = new Vue();
 
+
+/**
+ * Example components for passport
+ */
 Vue.component(
   'passport-clients',
   require('./components/passport/Clients.vue').default
@@ -121,5 +126,13 @@ Vue.component(
  */
 const app = new Vue({
     el: '#app',
-    router
+    router,
+    data: {
+      inputSearch: ''
+    },
+    methods: {
+      search: _.debounce(() =>{
+        Event.$emit('search')
+      },500)
+    }
 });
