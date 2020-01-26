@@ -28,17 +28,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
     </ul>
 
     <!-- SEARCH FORM -->
-    <form class="form-inline ml-3">
+    <div class="col-xs-3">
       <div class="input-group input-group-sm">
-        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+        <input class="form-control form-control-navbar" type="search" @keyup="search" v-model="inputSearch" placeholder="Search" aria-label="Search">
         <div class="input-group-append">
-          <button class="btn btn-navbar" type="submit">
+          <button class="btn btn-navbar" @click="search">
             <i class="fas fa-search"></i>
           </button>
         </div>
       </div>
-    </form>
-
+    </div>
     <ul class="navbar-nav ml-auto">
 
       <li class="nav-item">
@@ -63,8 +62,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
-      <img src="./img/logo.png" alt="EZ-Facturation Logo" class="brand-image img-circle elevation-3"
+    <a href="/" class="brand-link">
+      <img src="img/logo.png" alt="EZ-Facturation Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
       <span class="brand-text font-weight-light">EZ-Facturation</span>
     </a>
@@ -101,7 +100,31 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-cog"></i>
+              <i class="fas fa-file-invoice nav-icon"></i>
+              <p>
+                Billing
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <router-link to="/billing" class="nav-link">
+                  <i class="fas fa-list nav-icon"></i>
+                  <p>Billings</p>
+                </router-link>
+              </li>
+              <li class="nav-item">
+                <router-link to="/invoice-generation" class="nav-link">
+                  <i class="fa fa-plus nav-icon"></i>
+                  <p>New Invoice</p>
+                </router-link>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="fas fa-toolbox nav-icon"></i>
               <p>
                 Management
                 <i class="right fas fa-angle-left"></i>
@@ -111,23 +134,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <li class="nav-item">
                 <router-link to="customer" class="nav-link">
                   <i class="fas fa-users nav-icon"></i>
-                  <p>Clients</p>
+                  <p>Customers</p>
                 </router-link>
               </li>
               <li class="nav-item">
                 <router-link to="/reference" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Inactive Page</p>
+                  <i class="fas fa-bars nav-icon"></i>
+                  <p>References</p>
                 </router-link>
               </li>
             </ul>
           </li>
 
           <li class="nav-item">
-            <router-link to="/profile" class="nav-link">
-              <i class="nav-icon fas fa-user"></i>
+            <router-link to="/settings" class="nav-link">
+              <i class="nav-icon fas fa-cogs"></i>
               <p>
-                Profile
+                Settings
               </p>
             </router-link>
           </li>
@@ -155,7 +178,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- /.content-wrapper -->
 
   <!-- Main Footer -->
-  <footer class="main-footer">
+  <footer class="main-footer no-print">
     <!-- To the right -->
     <div class="float-right d-none d-sm-inline">
       Join my project on GitHub!
